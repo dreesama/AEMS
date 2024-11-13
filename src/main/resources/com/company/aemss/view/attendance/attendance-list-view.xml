@@ -7,9 +7,11 @@
         <collection id="attendancesDc"
                     class="com.company.aemss.entity.Attendance">
             <fetchPlan extends="_base">
-                <property name="id"/>
-                <property name="event"/>
-                <property name="student" fetchPlan="_instance_name"/>
+                <property name="student" fetchPlan="_instance_name">
+                    <property name="lastName"/>
+                    <property name="department" fetchPlan="_base"/>
+                </property>
+                <property name="event" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="attendancesDl" readOnly="true">
                 <query>
@@ -39,7 +41,8 @@
             <button id="editBtn" action="attendancesDataGrid.edit"/>
             <button id="removeBtn" action="attendancesDataGrid.remove"/>
             <!-- QR Code Scanner Button -->
-            <button id="scanQrCodeBtn" text="Scan QR Code"/>
+            <button id="scanQrCodeBtn" text="Scan QR Code" icon="QRCODE"/>
+
             <simplePagination id="pagination" dataLoader="attendancesDl"/>
         </hbox>
         <dataGrid id="attendancesDataGrid"
@@ -53,10 +56,14 @@
                 <action id="remove" type="list_remove"/>
             </actions>
             <columns resizable="true">
-                <column property="event"/>
+                <column property="student.event"/>
                 <column property="scannedAt"/>
                 <column property="status"/>
-                <column property="student"/>
+                <column property="student.firstName"/>
+                <column property="student.lastName"/>
+                <column property="student.department"/>
+
+
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

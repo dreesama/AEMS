@@ -2,37 +2,45 @@ package com.company.aemss.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.data.DdlGeneration;
 import jakarta.persistence.*;
 
 import java.util.Date;
 import java.util.UUID;
 
-@DdlGeneration(value = DdlGeneration.DbScriptGenerationMode.DISABLED)
 @JmixEntity
-@Table(name = "attendance")
+@Table(name = "ATTENDANCE", indexes = {
+        @Index(name = "IDX_ATTENDANCE_EVENT", columnList = "EVENT_ID")
+})
 @Entity
 public class Attendance {
     @JmixGeneratedValue
-    @Column(name = "id", nullable = false)
+    @Column(name = "ID", nullable = false)
     @Id
     private UUID id;
 
-    @JoinColumn(name = "event_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Event event; // Reference to Event entity
+    @JoinColumn(name = "STUDENT_ID")
+    private Student student;
 
-    @Column(name = "scanned_at")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "EVENT_ID")
+    private Event event;
+
+    @Column(name = "SCANNED_AT")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date scannedAt; // The time when the QR code was scanned
+    private Date scannedAt;
 
-    @Column(name = "status")
-    @Lob
+    @Column(name = "STATUS")
     private String status;
 
-    @JoinColumn(name = "student_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
+    // Getters and Setters
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
 
     public Student getStudent() {
         return student;
@@ -40,22 +48,6 @@ public class Attendance {
 
     public void setStudent(Student student) {
         this.student = student;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public Date getScannedAt() {
-        return scannedAt;
-    }
-
-    public void setScannedAt(Date scannedAt) {
-        this.scannedAt = scannedAt;
     }
 
     public Event getEvent() {
@@ -66,11 +58,26 @@ public class Attendance {
         this.event = event;
     }
 
-    public UUID getId() {
-        return id;
+    public Date getScannedAt() {
+        return scannedAt;
     }
 
-    public void setId(UUID id) {
-        this.id = id;
+    public void setScannedAt(Date scannedAt) {
+        this.scannedAt = scannedAt;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    // Optional: Instance name method for UI representation
+    public String getInstanceName() {
+        return student != null
+                ? student.getFirstName() + " " + student.getLastName()
+                : "Attendance Record";
     }
 }

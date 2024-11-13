@@ -6,9 +6,10 @@
         <instance id="qrCodeDc"
                   class="com.company.aemss.entity.QrCode">
             <fetchPlan extends="_base">
-                <property name="id"/>
-                <property name="event"/>
-                <property name="student"/>
+                <property name="student">
+                    <property name="event" fetchPlan="_base"/>
+                    <property name="firstName"/>
+                </property>
             </fetchPlan>
             <loader id="qrCodeDl"/>
         </instance>
@@ -22,19 +23,19 @@
     </actions>
     <layout>
         <formLayout id="form" dataContainer="qrCodeDc">
-            <entityPicker id="eventField" property="event">
+            <entityPicker id="eventField" property="student.event">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>
                     <action id="entityClear" type="entity_clear"/>
                 </actions>
-            </entityPicker>
+            </entityPicker> <entityPicker id="studentField" property="student">
+            <actions>
+                <action id="entityLookup" type="entity_lookup"/>
+                <action id="entityClear" type="entity_clear"/>
+            </actions>
+        </entityPicker>
             <textArea id="qrCodeDataField" height="9.5em" property="qrCodeData"/>
-            <entityPicker id="studentField" property="student">
-                <actions>
-                    <action id="entityLookup" type="entity_lookup"/>
-                    <action id="entityClear" type="entity_clear"/>
-                </actions>
-            </entityPicker>
+
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

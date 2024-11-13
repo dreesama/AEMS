@@ -6,9 +6,12 @@
         <instance id="attendanceDc"
                   class="com.company.aemss.entity.Attendance">
             <fetchPlan extends="_base">
-                <property name="id"/>
                 <property name="event"/>
-                <property name="student" fetchPlan="_instance_name"/>
+                <property name="student" fetchPlan="_instance_name">
+                    <property name="department" fetchPlan="_instance_name"/>
+                    <property name="lastName"/>
+                    <property name="section"/>
+                </property>
             </fetchPlan>
             <loader id="attendanceDl"/>
         </instance>
@@ -22,14 +25,14 @@
     </actions>
     <layout>
         <formLayout id="form" dataContainer="attendanceDc">
-            <entityPicker id="eventField" property="event">
+            <entityPicker id="eventField" property="student.event">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>
                     <action id="entityClear" type="entity_clear"/>
                 </actions>
             </entityPicker>
             <dateTimePicker id="scannedAtField" property="scannedAt"/>
-            <textArea id="statusField" height="9.5em" property="status"/>
+            <textArea id="statusField" property="status"/>
             <entityPicker id="studentField" property="student">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>

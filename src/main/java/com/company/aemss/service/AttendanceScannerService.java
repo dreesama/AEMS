@@ -9,12 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-
 @Service
 public class AttendanceScannerService {
+
+    private static final int DEFAULT_EVENT_DURATION_HOURS = 8;
 
     @Autowired
     private DataManager dataManager;
@@ -35,7 +39,42 @@ public class AttendanceScannerService {
         Student student = qrCode.getStudent();
         Event event = qrCode.getEvent();
 
-        // Check if already checked in
+        // Get current date and time
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        LocalDateTime eventStartTime = LocalDateTime.ofInstant(
+                event.getTimeStarts().toInstant(),
+                ZoneId.systemDefault()
+        );
+
+        // Hardcoded 8-hour duration
+        LocalDateTime eventEndTime = eventStartTime.plusHours(DEFAULT_EVENT_DURATION_HOURS);
+
+        // Validate attendance scanning
+        validateAttendanceScan(student, event, currentDateTime, eventStartTime, eventEndTime);
+
+        // Create Attendance Record
+        Attendance attendance = dataManager.create(Attendance.class);
+        attendance.setStudent(student);
+        attendance.setEvent(event);
+        attendance.setScannedAt(Date.from(currentDateTime.atZone(ZoneId.systemDefault()).toInstant()));
+
+        // Determine attendance status based on new logic
+        attendance.setStatus(determineAttendanceStatus(currentDateTime, eventStartTime, eventEndTime));
+
+        // Save the attendance record
+        return dataManager.save(attendance);
+    }
+
+    private void validateAttendanceScan(Student student, Event event,
+                                        LocalDateTime currentDateTime,
+                                        LocalDateTime eventStartTime,
+                                        LocalDateTime eventEndTime) {
+        // Check if student is registered for the event
+        if (student == null || event == null) {
+            throw new RuntimeException("Invalid student or event");
+        }
+
+        // Check if attendance already exists
         Optional<Attendance> existingAttendance = dataManager.load(Attendance.class)
                 .query("select a from Attendance a where a.student = :student and a.event = :event")
                 .parameter("student", student)
@@ -45,50 +84,37 @@ public class AttendanceScannerService {
         if (existingAttendance.isPresent()) {
             throw new RuntimeException("Already checked in");
         }
-
-        // Create Attendance Record
-        Attendance attendance = dataManager.create(Attendance.class);
-        attendance.setStudent(student);
-        attendance.setEvent(event);
-
-        // Set scanned time
-        Date currentTime = new Date();
-        attendance.setScannedAt(currentTime);
-
-        // Determine status
-        if (event.getTimeStarts() != null) {
-            long timeDifference = currentTime.getTime() - event.getTimeStarts().getTime();
-            long fifteenMinutesInMillis = 15 * 60 * 1000; // 15 minutes
-
-            if (timeDifference > fifteenMinutesInMillis) {
-                attendance.setStatus("LATE");
-            } else {
-                attendance.setStatus("ON TIME");
-            }
-        } else {
-            attendance.setStatus("UNKNOWN");
-        }
-
-        // Save the attendance record
-        return dataManager.save(attendance);
     }
 
+    private String determineAttendanceStatus(LocalDateTime currentDateTime,
+                                             LocalDateTime eventStartTime,
+                                             LocalDateTime eventEndTime) {
+        // Too early
+        if (currentDateTime.isBefore(eventStartTime)) {
+            throw new RuntimeException("Too Early :D Event not yet Started");
+        }
+
+        // Too late
+        if (currentDateTime.isAfter(eventEndTime)) {
+            throw new RuntimeException("Too Late :( Event Ended");
+        }
+
+        // Present (during event time)
+        return "PRESENT";
+    }
     @Transactional
     public void markAbsentForMissedEvents() {
-        // Find events that have passed
-        Date currentTime = new Date();
+        LocalDateTime currentDateTime = LocalDateTime.now();
 
-        // Load events that have started and have no attendance record
         List<Event> missedEvents = dataManager.load(Event.class)
-                .query("select e from Event e where e.timeStarts < :currentTime " +
+                .query("select e from Event e where e.timeStarts < :currentDateTime " +
                         "and not exists (select a from Attendance a where a.event = e)")
-                .parameter("currentTime", currentTime)
+                .parameter("currentDateTime", currentDateTime)
                 .list();
 
         for (Event event : missedEvents) {
-            // Find all students associated with QR codes for this event
             List<QrCode> eventQrCodes = dataManager.load(QrCode.class)
-                    .query("select q from QrCode q where q.event = :event")
+                    .query("select q from QrCode q where q.student.event = :event")
                     .parameter("event", event)
                     .list();
 
@@ -97,10 +123,16 @@ public class AttendanceScannerService {
                 attendance.setStudent(qrCode.getStudent());
                 attendance.setEvent(event);
                 attendance.setScannedAt(event.getTimeStarts());
-                attendance.setStatus("ABSENT");
+                attendance.setStatus("MISSED");
 
                 dataManager.save(attendance);
             }
         }
+    }
+    @Transactional(readOnly = true)
+    public List<Attendance> getAllAttendanceRecords() {
+        return dataManager.load(Attendance.class)
+                .all()
+                .list();
     }
 }

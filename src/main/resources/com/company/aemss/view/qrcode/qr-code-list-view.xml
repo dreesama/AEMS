@@ -7,9 +7,14 @@
         <collection id="qrCodesDc"
                     class="com.company.aemss.entity.QrCode">
             <fetchPlan extends="_base">
-                <property name="id"/>
-                <property name="event"/>
-                <property name="student"/>
+                <property name="student">
+                    <property name="event" fetchPlan="_instance_name"/>
+                    <property name="student"/>
+                    <property name="department" fetchPlan="_base"/>
+                    <property name="firstName"/>
+                    <property name="lastName"/>
+                    <property name="section"/>
+                </property>
             </fetchPlan>
             <loader id="qrCodesDl" readOnly="true">
                 <query>
@@ -51,9 +56,10 @@
                 <action id="remove" type="list_remove"/>
             </actions>
             <columns resizable="true">
-                <column property="event"/>
+                <column property="student.event"/>
                 <column property="qrCodeData" visible="false"/>
                 <column property="student"/>
+
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

@@ -3,17 +3,27 @@ package com.company.aemss.view.attendance;
 import com.company.aemss.entity.Attendance;
 import com.company.aemss.service.AttendanceScannerService;
 import com.company.aemss.view.main.MainView;
+import com.vaadin.flow.component.DetachEvent;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.notification.Notification;
+import com.vaadin.flow.component.notification.NotificationVariant;
 import com.vaadin.flow.component.orderedlayout.FlexComponent;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextField;
+import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.router.Route;
 import io.jmix.flowui.view.*;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 @Route(value = "attendances", layout = MainView.class)
 @ViewController("Attendance.list")
@@ -28,67 +38,119 @@ public class AttendanceListView extends StandardListView<Attendance> {
     @ViewComponent
     private Button scanQrCodeBtn;
 
+    @ViewComponent
+    private Grid<Attendance> attendancesDataGrid;
+
+    private Timer timer;
+
     @Subscribe
     public void onInit(InitEvent event) {
-        // Add QR Code Scanner functionality
         scanQrCodeBtn.addClickListener(clickEvent -> openQrCodeScannerDialog());
+        startPollingForUpdates();
+    }
+
+    private void startPollingForUpdates() {
+        timer = new Timer(true);
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                getUI().ifPresent(ui -> ui.access(() -> {
+                    refreshAttendanceList();
+                }));
+            }
+        }, 0, 5000); // Poll every 5 seconds
+    }
+
+    private void refreshAttendanceList() {
+        List<Attendance> attendanceList = attendanceScannerService.getAllAttendanceRecords();
+        attendancesDataGrid.setItems(attendanceList);
     }
 
     private void openQrCodeScannerDialog() {
-        // Create a dialog for QR Code scanning
         Dialog scannerDialog = new Dialog();
-        scannerDialog.setHeaderTitle("QR Code Attendance Scanner");
+        scannerDialog.setHeaderTitle("Attendance QR Code Scanner");
 
-        // Create layout for scanner
-        VerticalLayout layout = new VerticalLayout();
+        // Main Layout
+        VerticalLayout mainLayout = new VerticalLayout();
+        mainLayout.setSpacing(true);
+        mainLayout.setPadding(true);
+        mainLayout.setAlignItems(FlexComponent.Alignment.STRETCH);
 
-        // QR Code input field
+        // QR Code Input
         TextField qrCodeField = new TextField("Scan QR Code");
-        qrCodeField.setWidth("100%");
+        qrCodeField.setWidthFull();
+        qrCodeField.setPlaceholder("Enter QR Code");
+        qrCodeField.setClearButtonVisible(true);
 
-        // Status label
-        H2 statusLabel = new H2("");
-        statusLabel.getStyle().set("color", "green");
+        // Status Display
+        H2 statusLabel = new H2("Scan a QR Code");
+        statusLabel.getStyle().set("text-align", "center").set("margin", "10px 0");
 
-        // Scan button
-        Button scanButton = new Button("Scan", clickEvent -> {
-            String qrCode = qrCodeField.getValue();
+        // Scan Button
+        Button scanButton = new Button("Scan", VaadinIcon.QRCODE.create(), clickEvent ->
+                processQrCodeScan(qrCodeField, statusLabel));
+        scanButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
 
-            if (qrCode == null || qrCode.trim().isEmpty()) {
-                Notification.show("Please enter a QR Code", 3000, Notification.Position.MIDDLE);
-                return;
-            }
+        // Close Button
+        Button closeButton = new Button("Close", event -> scannerDialog.close());
+        closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
-            try {
-                // Process QR Code scan
-                Attendance attendance = attendanceScannerService.processQrCodeScan(qrCode);
+        // Button Layout
+        HorizontalLayout buttonLayout = new HorizontalLayout(scanButton, closeButton);
+        buttonLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.CENTER);
+        buttonLayout.setSpacing(true);
 
-                // Update status
-                statusLabel.setText(String.format(
-                        "Checked In: %s (%s)",
-                        attendance.getStudent().getFirstName() + " " + attendance.getStudent().getLastName(),
-                        attendance.getStatus()
-                ));
+        // Add components to main layout
+        mainLayout.add(qrCodeField, buttonLayout, statusLabel);
 
-                // Clear input
-                qrCodeField.clear();
-            } catch (RuntimeException e) {
-                Notification.show(e.getMessage(), 3000, Notification.Position.MIDDLE);
-                statusLabel.setText("Scan Failed");
-            }
-        });
+        // Dialog configuration
+        scannerDialog.add(mainLayout);
+        scannerDialog.setWidth("400px");
+        scannerDialog.setCloseOnEsc(true);
+        scannerDialog.setCloseOnOutsideClick(false);
 
-        // Add enter key listener
-        qrCodeField.addKeyPressListener(Key.ENTER, event -> scanButton.click());
+        // Enter key listener
+        qrCodeField.addKeyPressListener(Key.ENTER, event -> processQrCodeScan(qrCodeField, statusLabel));
 
-        // Close button
-        Button closeButton = new Button("Close", clickEvent -> scannerDialog.close());
-
-        // Arrange layout
-        layout.add(qrCodeField, scanButton, statusLabel, closeButton);
-        layout.setAlignItems(FlexComponent.Alignment.STRETCH);
-
-        scannerDialog.add(layout);
         scannerDialog.open();
+    }
+
+    private void processQrCodeScan(TextField qrCodeField, H2 statusLabel) {
+        String qrCode = qrCodeField.getValue();
+
+        if (qrCode == null || qrCode.trim().isEmpty()) {
+            showNotification("Please enter a QR Code", NotificationVariant.LUMO_ERROR);
+            return;
+        }
+
+        try {
+            Attendance attendance = attendanceScannerService.processQrCodeScan(qrCode);
+
+            String statusMessage = String.format("Status: %s", attendance.getStatus());
+            statusLabel.setText(statusMessage);
+            statusLabel.getStyle().set("color", "green");
+            qrCodeField.clear();
+        } catch (RuntimeException e) {
+            showNotification(e.getMessage(), NotificationVariant.LUMO_ERROR);
+            statusLabel.setText("Scan Failed");
+            statusLabel.getStyle().set("color", "red");
+        }
+    }
+
+    private void showNotification(String message, NotificationVariant notificationVariant) {
+        Notification notification = new Notification(message);
+        notification.addThemeVariants(notificationVariant);
+        notification.setDuration(3000);
+        notification.setPosition(Notification.Position.TOP_CENTER);
+
+        notification.open();
+    }
+
+    @Override
+    public void onDetach(DetachEvent event) {
+        super.onDetach(event);
+        if (timer != null) {
+            timer.cancel();
+        }
     }
 }

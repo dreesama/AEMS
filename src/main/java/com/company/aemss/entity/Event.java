@@ -2,12 +2,12 @@ package com.company.aemss.entity;
 
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.data.DdlGeneration;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
-@DdlGeneration(value = DdlGeneration.DbScriptGenerationMode.DISABLED)
 @JmixEntity
 @Table(name = "events")
 @Entity
@@ -72,5 +72,12 @@ public class Event {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public LocalDate getDate() {
+        if (timeStarts != null) {
+            return timeStarts.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        }
+        return null; // or LocalDate.now() or throw an exception based on your needs
     }
 }

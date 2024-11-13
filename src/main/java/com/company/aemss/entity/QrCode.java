@@ -2,12 +2,10 @@ package com.company.aemss.entity;
 
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.data.DdlGeneration;
 import jakarta.persistence.*;
 
 import java.util.UUID;
 
-@DdlGeneration(value = DdlGeneration.DbScriptGenerationMode.DISABLED)
 @JmixEntity
 @Table(name = "qr_codes")
 @Entity
@@ -17,17 +15,15 @@ public class QrCode {
     @Id
     private UUID id;
 
-    @JoinColumn(name = "event_id")
+    @JoinColumn(name = "student_id")
     @ManyToOne(fetch = FetchType.LAZY)
-    private Event event;
+    private Student student;
 
     @Column(name = "qr_code_data")
     @Lob
     private String qrCodeData;
 
-    @JoinColumn(name = "student_id")
-    @ManyToOne(fetch = FetchType.LAZY)
-    private Student student;
+    // Removed the event field
 
     public Student getStudent() {
         return student;
@@ -45,12 +41,9 @@ public class QrCode {
         this.qrCodeData = qrCodeData;
     }
 
+    // New method to get the Event from the Student
     public Event getEvent() {
-        return event;
-    }
-
-    public void setEvent(Event event) {
-        this.event = event;
+        return student != null ? student.getEvent() : null;
     }
 
     public UUID getId() {

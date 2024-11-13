@@ -2,10 +2,8 @@ package com.company.aemss.entity;
 
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.data.DdlGeneration;
 import jakarta.persistence.*;
 
-@DdlGeneration(value = DdlGeneration.DbScriptGenerationMode.DISABLED)
 @JmixEntity
 @Table(name = "departments")
 @Entity
