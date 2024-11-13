@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://attendanceListView.title"
+      focusComponent="attendancesDataGrid">
+    <data>
+        <collection id="attendancesDc"
+                    class="com.company.aemss.entity.Attendance">
+            <fetchPlan extends="_base">
+                <property name="id"/>
+                <property name="event"/>
+                <property name="student" fetchPlan="_instance_name"/>
+            </fetchPlan>
+            <loader id="attendancesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Attendance e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="attendancesDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="createBtn" action="attendancesDataGrid.create"/>
+            <button id="editBtn" action="attendancesDataGrid.edit"/>
+            <button id="removeBtn" action="attendancesDataGrid.remove"/>
+            <!-- QR Code Scanner Button -->
+            <button id="scanQrCodeBtn" text="Scan QR Code"/>
+            <simplePagination id="pagination" dataLoader="attendancesDl"/>
+        </hbox>
+        <dataGrid id="attendancesDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="attendancesDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="create" type="list_create"/>
+                <action id="edit" type="list_edit"/>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="event"/>
+                <column property="scannedAt"/>
+                <column property="status"/>
+                <column property="student"/>
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>
