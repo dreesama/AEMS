@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
+      title="msg://qrCodeListView.title"
+      focusComponent="qrCodesDataGrid">
+    <data>
+        <collection id="qrCodesDc"
+                    class="com.company.aemss.entity.QrCode">
+            <fetchPlan extends="_base">
+                <property name="student">
+                    <property name="student"/>
+                    <property name="department" fetchPlan="_base"/>
+                    <property name="firstName"/>
+                    <property name="lastName"/>
+                    <property name="section"/>
+                </property>
+            </fetchPlan>
+            <loader id="qrCodesDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from QrCode e]]>
+                </query>
+            </loader>
+        </collection>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+        <urlQueryParameters>
+            <genericFilter component="genericFilter"/>
+            <pagination component="pagination"/>
+        </urlQueryParameters>
+    </facets>
+    <actions>
+        <action id="selectAction" type="lookup_select"/>
+        <action id="discardAction" type="lookup_discard"/>
+    </actions>
+    <layout>
+        <genericFilter id="genericFilter"
+                       dataLoader="qrCodesDl">
+            <properties include=".*"/>
+        </genericFilter>
+        <hbox id="buttonsPanel" classNames="buttons-panel">
+            <button id="readBtn" action="qrCodesDataGrid.readAction"/>
+
+            <button id="createBtn" action="qrCodesDataGrid.create"/>
+            <button id="editBtn" action="qrCodesDataGrid.edit"/>
+            <button id="removeBtn" action="qrCodesDataGrid.remove"/>
+            <simplePagination id="pagination" dataLoader="qrCodesDl"/>
+        </hbox>
+        <dataGrid id="qrCodesDataGrid"
+                  width="100%"
+                  minHeight="20em"
+                  dataContainer="qrCodesDc"
+                  columnReorderingAllowed="true">
+            <actions>
+                <action id="readAction" type="list_read">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="create" type="list_create" visible="false"/>
+                <action id="edit" type="list_edit" visible="false">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="remove" type="list_remove"/>
+            </actions>
+            <columns resizable="true">
+                <column property="qrCodeData" visible="false"/>
+                <column property="student"/>
+                <column property="student.lastName" />
+                <column property="student.department" />
+
+
+            </columns>
+        </dataGrid>
+        <hbox id="lookupActions" visible="false">
+            <button id="selectBtn" action="selectAction"/>
+            <button id="discardBtn" action="discardAction"/>
+        </hbox>
+    </layout>
+</view>

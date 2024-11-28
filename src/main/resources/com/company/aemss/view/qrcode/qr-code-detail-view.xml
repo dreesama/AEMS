@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://qrCodeDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="qrCodeDc"
+                  class="com.company.aemss.entity.QrCode">
+            <fetchPlan extends="_base">
+                <property name="student">
+                    <property name="firstName"/>
+                </property>
+            </fetchPlan>
+            <loader id="qrCodeDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="qrCodeDc">
+            <entityPicker id="studentField" property="student">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
+            <textArea id="qrCodeDataField" height="9.5em" property="qrCodeData"/>
+
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

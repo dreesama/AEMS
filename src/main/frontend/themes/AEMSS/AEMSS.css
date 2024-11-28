@@ -1,0 +1,11 @@
+/* Define your styles here */
+
+.event_image{
+    object-fit: contain;
+    background-image: url('image.png');
+    background-size: contain; /* Ensures the image fits within the element */
+    background-repeat: no-repeat; /* Prevents the image from repeating */
+    background-position: center; /* Centers the image */
+    width: 100%; /* Set a width for the element */
+    height: 100%; /* Set a height for the element */
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://eventDetailView.title"
+      focusComponent="form">
+    <data>
+        <instance id="eventDc"
+                  class="com.company.aemss.entity.Event">
+            <fetchPlan extends="_base">
+                <property name="id"/>
+            </fetchPlan>
+            <loader id="eventDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <image id="image" property="eventImage" dataContainer="eventDc" height="200px" width="400px"
+               classNames="event_image" maxHeight="200px" maxWidth="400px"/>
+        <formLayout id="form" dataContainer="eventDc">
+            <dateTimePicker id="timeStartsField" property="timeStarts"/>
+            <textField id="nameField" property="name"/>
+            <textField id="locationField" property="location"/>
+            <textArea id="descriptionField" property="description" height="100px" maxLength="30"
+                      valueChangeMode="EAGER"/>
+            <hbox>
+                <fileStorageUploadField id="eventImageField" property="eventImage" dataContainer="eventDc"
+                                        clearButtonVisible="true" fileNameVisible="true" uploadIcon="vaadin:upload"/>
+            </hbox>
+
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseBtn" action="saveAction"/>
+            <button id="closeBtn" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

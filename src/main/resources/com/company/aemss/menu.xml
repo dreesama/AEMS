@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<menu-config xmlns="http://jmix.io/schema/flowui/menu">
+
+    <menu id="application" title="msg://com.company.aemss/menu.application.title" opened="true">
+        <item view="Event.list" title="msg://com.company.aemss.view.event/eventListView.title" icon="vaadin:calendar"/>
+        <item view="Department.list" title="msg://com.company.aemss.view.department/departmentListView.title" icon="vaadin:building"/>
+        <item view="Student.list" title="msg://com.company.aemss.view.student/studentListView.title" icon="vaadin:group"/>
+        <item view="QrCode.list" title="msg://com.company.aemss.view.qrcode/qrCodeListView.title" icon="vaadin:qrcode"/>
+        <item view="Attendance.list" title="msg://com.company.aemss.view.attendance/attendanceListView.title" icon="vaadin:check"/>
+    </menu>
+    <menu id="application2" title="Manage Users" opened="true">
+        <item view="User.list" title="msg://com.company.aemss.view.user/UserListView.title" icon="vaadin:user"/>
+    </menu>
+
+</menu-config>
