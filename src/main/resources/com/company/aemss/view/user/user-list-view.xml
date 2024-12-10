@@ -26,11 +26,13 @@
     </facets>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="usersDl">
+                       dataLoader="usersDl" enabled="false" visible="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="createBtn" action="usersDataGrid.create"/>
+            <button id="readBtn" action="usersDataGrid.read"/>
+
             <button id="editBtn" action="usersDataGrid.edit"/>
             <button id="removeBtn" action="usersDataGrid.remove"/>
             <button id="showRoleAssignmentsBtn" action="usersDataGrid.showRoleAssignments"/>
@@ -38,9 +40,10 @@
                 <items>
                     <actionItem id="changePasswordItem" ref="usersDataGrid.changePassword"/>
                     <actionItem id="resetPasswordItem" ref="usersDataGrid.resetPassword"/>
-                    <actionItem id="showUserSubstitutionsItem" ref="usersDataGrid.showUserSubstitutions"/>
                 </items>
             </dropdownButton>
+            <button id="excelBtn" action="usersDataGrid.excelExport"/>
+
             <simplePagination id="pagination" dataLoader="usersDl"/>
         </hbox>
         <dataGrid id="usersDataGrid"
@@ -49,19 +52,34 @@
                   minHeight="20em"
                   dataContainer="usersDc">
             <actions>
-                <action id="create" type="list_create"/>
-                <action id="edit" type="list_edit"/>
+                <action id="create" type="list_create">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="read" type="list_read">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
+                <action id="edit" type="list_edit">
+                    <properties>
+                        <property name="openMode" value="DIALOG"/>
+                    </properties>
+                </action>
                 <action id="remove" type="list_remove"/>
                 <action id="showRoleAssignments" type="sec_showRoleAssignments"/>
                 <action id="changePassword" type="sec_changePassword"/>
                 <action id="resetPassword" type="sec_resetPassword"/>
                 <action id="showUserSubstitutions" type="sec_showUserSubstitutions"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
+
             </actions>
             <columns resizable="true">
-                <column property="username"/>
-                <column property="firstName"/>
-                <column property="lastName"/>
-                <column property="email"/>
+                <column property="username" filterable="true"/>
+                <column property="firstName" filterable="true"/>
+                <column property="lastName" filterable="true"/>
+                <column property="email" filterable="true"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

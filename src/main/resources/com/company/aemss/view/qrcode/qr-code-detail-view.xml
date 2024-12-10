@@ -29,7 +29,8 @@
                 </actions>
             </entityPicker>
             <textArea id="qrCodeDataField" height="9.5em" property="qrCodeData"/>
-
+            <textField id="studentFirstNameField" property="studentFirstName"/>
+            <textField id="studentLastNameField" property="studentLastName"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

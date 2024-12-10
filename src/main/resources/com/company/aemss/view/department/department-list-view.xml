@@ -8,6 +8,7 @@
                     class="com.company.aemss.entity.Department">
             <fetchPlan extends="_base">
                 <property name="id"/>
+                <property name="responsible" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="departmentsDl" readOnly="true">
                 <query>
@@ -29,13 +30,17 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="departmentsDl">
+                       dataLoader="departmentsDl" enabled="false" visible="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="createBtn" action="departmentsDataGrid.create"/>
+            <button id="readBtn" action="departmentsDataGrid.readAction"/>
+
             <button id="editBtn" action="departmentsDataGrid.edit"/>
             <button id="removeBtn" action="departmentsDataGrid.remove"/>
+            <button id="excelBtn" action="departmentsDataGrid.excelExport"/>
+
             <simplePagination id="pagination" dataLoader="departmentsDl"/>
         </hbox>
         <dataGrid id="departmentsDataGrid"
@@ -60,10 +65,13 @@
                     </properties>
                 </action>
                 <action id="remove" type="list_remove"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
+
             </actions>
             <columns resizable="true">
-                <column property="name"/>
+                <column property="name" filterable="true"/>
                 <column property="description"/>
+                <column property="responsible" filterable="true"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

@@ -27,7 +27,7 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="eventsDl">
+                       dataLoader="eventsDl" visible="false" enabled="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
@@ -35,7 +35,7 @@
             <button id="readButton" action="eventsDataGrid.read"/>
             <button id="editButton" action="eventsDataGrid.edit"/>
             <button id="removeButton" action="eventsDataGrid.remove"/>
-            <simplePagination id="pagination" dataLoader="eventsDl"/>
+            <simplePagination id="pagination" dataLoader="eventsDl" autoLoad="true"/>
         </hbox>
         <dataGrid id="eventsDataGrid"
                   width="100%"
@@ -62,10 +62,11 @@
             </actions>
             <columns resizable="true">
                 <column key="image" sortable="false" flexGrow="0" resizable="false"/>
+
                 <column property="timeStarts"/>
+                <column property="name"/>
                 <column property="description"/>
                 <column property="location"/>
-                <column property="name"/>
                 <column property="eventImage" visible="false"/>
             </columns>
         </dataGrid>

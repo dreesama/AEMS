@@ -30,8 +30,9 @@
     <layout>
         <formLayout id="form" dataContainer="studentDc">
             <entityComboBox id="departmentField" property="department" itemsContainer="departmentsDc"/>
-            <textField id="studentField" property="student"/>
-
+            <textField id="studentField" property="student" maxLength="6"
+                       valueChangeMode="EAGER" pattern="[0-9]*"
+                     />
             <textField id="firstNameField" property="firstName"/>
             <textField id="lastNameField" property="lastName"/>
             <textField id="sectionField" property="section"/>

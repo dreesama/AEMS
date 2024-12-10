@@ -29,14 +29,24 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="studentsDl">
-            <properties include=".*"/>
+                       dataLoader="studentsDl" enabled="false" visible="false">
+            <configurations>
+                <configuration id="propertyConfiguration"
+                               default="true"
+                               name="PropertyFilter">
+                    <propertyFilter property="firstName"
+                                    operation="CONTAINS"
+                                    operationEditable="true"/>
+                </configuration>
+            </configurations>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="createBtn" action="studentsDataGrid.create"/>
             <button id="readBtn" action="studentsDataGrid.readAction"/>
             <button id="editBtn" action="studentsDataGrid.edit"/>
             <button id="removeBtn" action="studentsDataGrid.remove"/>
+            <button id="excelExportButton" action="studentsDataGrid.excelExport"/>
+
             <simplePagination id="pagination" dataLoader="studentsDl"/>
         </hbox>
         <dataGrid id="studentsDataGrid"
@@ -61,14 +71,15 @@
                     </properties>
                 </action>
                 <action id="remove" type="list_remove"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
             </actions>
             <columns resizable="true">
-                <column property="department"/>
-                <column property="firstName"/>
-                <column property="lastName"/>
-                <column property="student"/>
-                <column property="section"/>
-                <column property="email"/>
+                <column property="department" filterable="true"/>
+                <column property="firstName" filterable="true"/>
+                <column property="lastName" filterable="true"/>
+                <column property="student" filterable="true"/>
+                <column property="section" filterable="true"/>
+                <column property="email" filterable="true" autoWidth="true"/>
                 <column property="password"/>
             </columns>
         </dataGrid>

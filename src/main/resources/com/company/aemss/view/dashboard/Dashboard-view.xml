@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view" xmlns:calendar="http://jmix.io/schema/fullcalendar/ui"
+      xmlns:pvttbl="http://jmix.io/schema/pvttbl/ui"
+      title="msg://dashboardView.title">
+    <data>
+        <collection id="studentsDc" class="com.company.aemss.entity.Student">
+            <fetchPlan extends="_base">
+                <property name="department" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="studentsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Student e]]>
+                </query>
+            </loader>
+        </collection>
+        <collection id="eventsDc" class="com.company.aemss.entity.Event">
+            <loader id="eventsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Event e]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
+
+    </data>
+
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <layout>
+
+        <h3 text="Calendar" alignSelf="CENTER"/>
+        <calendar:calendar id="calendar"
+                           initialDisplayMode="twoMonths"
+                           height="100%"
+                           width="100%"
+                           minHeight="30em" minWidth="100%">
+            <calendar:dataProviders>
+                <calendar:containerDataProvider dataContainer="eventsDc"
+                                                title="name"
+                                                startDateTime="timeStarts"
+                                             />
+            </calendar:dataProviders>
+            <calendar:customDisplayModes>
+
+                <calendar:displayMode id="twoMonths" type="MULTI_MONTH">
+                    <calendar:duration months="3"/>
+                </calendar:displayMode>
+            </calendar:customDisplayModes>
+        </calendar:calendar>
+        <vbox spacing="true" width="100%" height="100%">
+            <scroller width="100%" height="AUTO"/>
+            <h3 text="Pivot Table" alignSelf="CENTER"/>
+            <pvttbl:pivotTable id="studentPivotTable"
+                               dataContainer="studentsDc"
+                               showUI="true"
+                               height="100%"
+                               width="100%"
+                               showColumnTotals="true"
+                               showRowTotals="true">
+                <pvttbl:properties>
+                    <pvttbl:property name="student"/>
+                    <pvttbl:property name="firstName"/>
+                    <pvttbl:property name="lastName"/>
+                    <pvttbl:property name="section"/>
+                    <pvttbl:property name="email"/>
+                    <pvttbl:property name="department.name"/>
+                </pvttbl:properties>
+                <pvttbl:columns>
+                    <pvttbl:column value="section"/>
+                    <pvttbl:column value="department.name"/>
+                </pvttbl:columns>
+                <pvttbl:rows>
+                    <pvttbl:row value="firstName"/>
+                    <pvttbl:row value="lastName"/>
+                </pvttbl:rows>
+            </pvttbl:pivotTable>
+        </vbox>
+    </layout>
+</view>

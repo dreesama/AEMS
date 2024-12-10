@@ -1,8 +1,11 @@
 package com.company.aemss.entity;
 
+import io.jmix.core.DeletePolicy;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 @JmixEntity
 @Table(name = "students")
@@ -13,8 +16,10 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JoinColumn(name = "department_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @NotNull
+    @OnDeleteInverse(DeletePolicy.UNLINK)
+    @JoinColumn(name = "department_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private Department department;
 
     @Column(name = "student_id", nullable = false, unique = true)
@@ -30,7 +35,8 @@ public class Student {
     @Lob
     private String lastName;
 
-    @Column(name = "section")
+    @NotNull
+    @Column(name = "section", nullable = false)
     private String section;
 
     @Column(name = "email", unique = true)
@@ -112,7 +118,7 @@ public class Student {
     // Update email and password before updating the entity
     @PreUpdate
     public void updateEmailAndPassword() {
-        this.email = this.getLastName() + "." + this.getStudent() + "@ormoc.sti.edu.ph";
+        this.email = this.getLastName().toLowerCase() + "." + this.getStudent() + "@ormoc.sti.edu.ph";
         this.password = this.getStudent();
     }
 }

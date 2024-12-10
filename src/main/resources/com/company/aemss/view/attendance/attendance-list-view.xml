@@ -36,7 +36,7 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="attendancesDl">
+                       dataLoader="attendancesDl" visible="false" enabled="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
@@ -44,6 +44,8 @@
             <button id="readBtn" action="attendancesDataGrid.readAction"/>
             <button id="editBtn" action="attendancesDataGrid.edit"/>
             <button id="removeBtn" action="attendancesDataGrid.remove"/>
+            <button id="excelBtn" action="attendancesDataGrid.excelExport"/>
+
             <!-- Add QR Scanner button -->
 
 
@@ -71,13 +73,15 @@
                     </properties>
                 </action>
                 <action id="remove" type="list_remove"/>
+                <action id="excelExport" type="grdexp_excelExport"/>
+
             </actions>
             <columns resizable="true">
-                <column property="scannedAt"/>
-                <column property="status"/>
-                <column property="student.firstName"/>
-                <column property="student.lastName"/>
-                <column property="student.department"/>
+                <column property="scannedAt" filterable="true"/>
+                <column property="status" filterable="true"/>
+                <column property="student.firstName" filterable="true"/>
+                <column property="student.lastName" filterable="true"/>
+                <column property="student.department" filterable="true"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

@@ -14,6 +14,7 @@
                     <property name="lastName"/>
                     <property name="section"/>
                 </property>
+                <property name="preservedDepartment" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="qrCodesDl" readOnly="true">
                 <query>
@@ -35,15 +36,15 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="qrCodesDl">
+                       dataLoader="qrCodesDl" visible="false" enabled="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
             <button id="readBtn" action="qrCodesDataGrid.readAction"/>
-
             <button id="createBtn" action="qrCodesDataGrid.create"/>
             <button id="editBtn" action="qrCodesDataGrid.edit"/>
             <button id="removeBtn" action="qrCodesDataGrid.remove"/>
+
             <simplePagination id="pagination" dataLoader="qrCodesDl"/>
         </hbox>
         <dataGrid id="qrCodesDataGrid"
@@ -67,11 +68,10 @@
             </actions>
             <columns resizable="true">
                 <column property="qrCodeData" visible="false"/>
-                <column property="student"/>
-                <column property="student.lastName" />
-                <column property="student.department" />
-
-
+                <column property="studentFirstName" filterable="true"/>
+                <column property="studentLastName" filterable="true"/>
+                <!--                <column property="student"/>-->
+                <column property="preservedDepartment" filterable="true"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

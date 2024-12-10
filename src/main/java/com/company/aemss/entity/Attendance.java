@@ -1,6 +1,8 @@
-                                                                                                                            package com.company.aemss.entity;
+package com.company.aemss.entity;
 
+import io.jmix.core.DeletePolicy;
 import io.jmix.core.entity.annotation.JmixGeneratedValue;
+import io.jmix.core.entity.annotation.OnDeleteInverse;
 import io.jmix.core.metamodel.annotation.JmixEntity;
 import jakarta.persistence.*;
 
@@ -18,10 +20,12 @@ public class Attendance {
     @Id
     private UUID id;
 
+    @OnDeleteInverse(DeletePolicy.UNLINK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "STUDENT_ID")
     private Student student;
 
+    @OnDeleteInverse(DeletePolicy.UNLINK)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "EVENT_ID")
     private Event event;
@@ -75,5 +79,5 @@ public class Attendance {
     }
 
 
-    }
+}
 

@@ -28,17 +28,22 @@ public class EventListView extends StandardListView<Event> {
     private UiComponents uiComponents;
 
     @Autowired
-    private FileStorage fileStorage;
+    public FileStorage fileStorage;
     @Supply(to = "eventsDataGrid.image", subject = "renderer")
-    private Renderer<Event> eventsDataGridPictureRenderer() {
-        return new ComponentRenderer<>(user -> {
-            FileRef fileRef = user.getEventImage();
+    public Renderer<Event> eventsDataGridPictureRenderer() {
+        return new ComponentRenderer<>(event -> {
+            FileRef fileRef = event.getEventImage();
             if (fileRef != null) {
                 Image image = uiComponents.create(Image.class);
                 image.setWidth("30px");
                 image.setHeight("30px");
+
+                // Construct the file name based on the event name
+                String eventName = event.getName(); // Assuming getName() returns the event name
+                String fileName = StringUtils.isNotBlank(eventName) ? eventName + ".png" : "default.png";
+
                 StreamResource streamResource = new StreamResource(
-                        fileRef.getFileName(),
+                        fileName,
                         () -> fileStorage.openStream(fileRef));
                 image.setSrc(streamResource);
                 image.setClassName("event_image");
@@ -49,5 +54,4 @@ public class EventListView extends StandardListView<Event> {
             }
         });
     }
-
 }

@@ -7,6 +7,7 @@
                   class="com.company.aemss.entity.Department">
             <fetchPlan extends="_base">
                 <property name="id"/>
+                <property name="responsible" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="departmentDl"/>
         </instance>
@@ -20,8 +21,14 @@
     </actions>
     <layout>
         <formLayout id="form" dataContainer="departmentDc">
-            <textField id="nameField"  property="name"/>
-            <textArea id="descriptionField"  property="description"/>
+            <textField id="nameField" property="name"/>
+            <textArea id="descriptionField" property="description"/>
+            <entityPicker id="responsibleField" property="responsible">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </entityPicker>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

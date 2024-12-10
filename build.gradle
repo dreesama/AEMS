@@ -43,6 +43,10 @@ dependencies {
     }
     testImplementation 'io.jmix.flowui:jmix-flowui-test-assist'
     implementation 'org.postgresql:postgresql'
+    implementation 'io.jmix.gridexport:jmix-gridexport-flowui-starter'
+    implementation 'io.jmix.pivottable:jmix-pivottable-flowui-starter'
+    implementation 'io.jmix.fullcalendar:jmix-fullcalendar-flowui-starter'
+    implementation 'io.jmix.fullcalendar:jmix-fullcalendar-flowui-starter'
 }
 
 configurations.implementation {

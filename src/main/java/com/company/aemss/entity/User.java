@@ -6,7 +6,6 @@ import io.jmix.core.entity.annotation.SystemLevel;
 import io.jmix.core.metamodel.annotation.DependsOnProperties;
 import io.jmix.core.metamodel.annotation.InstanceName;
 import io.jmix.core.metamodel.annotation.JmixEntity;
-import io.jmix.data.DdlGeneration;
 import io.jmix.security.authentication.JmixUserDetails;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -16,7 +15,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.UUID;
 
-@DdlGeneration(value = DdlGeneration.DbScriptGenerationMode.CREATE_ONLY)
 @JmixEntity
 @Entity
 @Table(name = "USER_", indexes = {

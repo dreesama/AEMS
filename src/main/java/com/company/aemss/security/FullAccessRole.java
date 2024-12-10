@@ -26,8 +26,8 @@ public interface FullAccessRole {
     String CODE = "system-full-access";
 
     @EntityAttributePolicy(entityName = "*", attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @ViewPolicy(viewIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "User.list", "datatl_entityInspectorListView", "sec_ResourceRoleModel.detail", "sec_ResourceRoleModel.lookup", "sec_RowLevelRoleModel.detail", "sec_RowLevelRoleModel.lookup", "resetPasswordView", "changePasswordView", "sec_EntityAttributeResourcePolicyModel.detail", "sec_EntityResourcePolicyModel.detail", "sec_ViewResourcePolicyModel.detail", "sec_GraphQLResourcePolicyModel.detail", "sec_MenuResourcePolicyModel.detail", "sec_ViewResourcePolicyModel.create", "sec_MenuResourcePolicyModel.create", "sec_ResourcePolicyModel.detail", "sec_EntityAttributeResourcePolicyModel.create", "sec_EntityResourcePolicyModel.create", "sec_SpecificResourcePolicyModel.detail", "roleAssignmentView", "sec_RowLevelPolicyModel.detail", "sec_UserSubstitution.detail", "sec_UserSubstitution.view", "flowui_PropertyFilterCondition.detail", "flowui_JpqlFilterCondition.detail", "flowui_AddConditionView", "flowui_GroupFilterCondition.detail", "headerPropertyFilterLayout", "inputDialog", "flowui_DateIntervalDialog", "multiValueSelectDialog", "entityInfoView", "datatl_entityInspectorDetailView", "MainView", "User.detail", "LoginView", "Attendance.detail", "Department.detail", "Event.detail", "QrCode.detail", "Student.detail", "FragmentRenderer"})
-    @MenuPolicy(menuIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "User.list", "datatl_entityInspectorListView"})
+    @ViewPolicy(viewIds = "*")
+    @MenuPolicy(menuIds = "*")
     @SpecificPolicy(resources = "*")
     void fullAccess();
 
@@ -71,69 +71,87 @@ public interface FullAccessRole {
     @EntityPolicy(entityClass = LogicalFilterCondition.class, actions = EntityPolicyAction.ALL)
     void logicalFilterCondition();
 
-    @EntityPolicy(entityClass = ReferenceToEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = ReferenceToEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = ReferenceToEntity.class, actions = EntityPolicyAction.ALL)
     void referenceToEntity();
 
-    @EntityPolicy(entityClass = ResourcePolicyEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = ResourcePolicyEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = ResourcePolicyEntity.class, actions = EntityPolicyAction.ALL)
     void resourcePolicyEntity();
 
-    @EntityPolicy(entityClass = ResourcePolicyModel.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = ResourcePolicyModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = ResourcePolicyModel.class, actions = EntityPolicyAction.ALL)
     void resourcePolicyModel();
 
-    @EntityPolicy(entityClass = ResourceRoleModel.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = ResourceRoleModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = ResourceRoleModel.class, actions = EntityPolicyAction.ALL)
     void resourceRoleModel();
 
-    @EntityPolicy(entityClass = ResourceRoleEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = ResourceRoleEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = ResourceRoleEntity.class, actions = EntityPolicyAction.ALL)
     void resourceRoleEntity();
 
-    @EntityPolicy(entityClass = RoleAssignmentEntity.class, actions = EntityPolicyAction.CREATE)
-    void roleAssignmentEntity();
-
-    @EntityPolicy(entityClass = RowLevelPolicyEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = RowLevelPolicyEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = RowLevelPolicyEntity.class, actions = EntityPolicyAction.ALL)
     void rowLevelPolicyEntity();
 
-    @EntityPolicy(entityClass = RowLevelPolicyModel.class, actions = EntityPolicyAction.CREATE)
-    void rowLevelPolicyModel();
-
-    @EntityPolicy(entityClass = RowLevelRoleModel.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = RowLevelRoleModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = RowLevelRoleModel.class, actions = EntityPolicyAction.ALL)
     void rowLevelRoleModel();
 
-    @EntityPolicy(entityClass = RowLevelRoleEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = RowLevelRoleEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = RowLevelRoleEntity.class, actions = EntityPolicyAction.ALL)
     void rowLevelRoleEntity();
 
-    @EntityPolicy(entityClass = KeyValueEntity.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = KeyValueEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = KeyValueEntity.class, actions = EntityPolicyAction.ALL)
     void keyValueEntity();
 
-    @EntityPolicy(entityClass = JpqlFilterCondition.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = JpqlFilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = JpqlFilterCondition.class, actions = EntityPolicyAction.ALL)
     void jpqlFilterCondition();
 
-    @EntityPolicy(entityClass = InfoValue.class, actions = EntityPolicyAction.CREATE)
-    void infoValue();
-
-    @EntityPolicy(entityClass = GroupFilterCondition.class, actions = EntityPolicyAction.CREATE)
-    void groupFilterCondition();
-
-    @EntityPolicy(entityClass = HeaderFilterCondition.class, actions = EntityPolicyAction.CREATE)
-    void headerFilterCondition();
-
-    @EntityPolicy(entityClass = FilterConfiguration.class, actions = EntityPolicyAction.CREATE)
-    void filterConfiguration();
-
-    @EntityPolicy(entityClass = FilterValueComponent.class, actions = EntityPolicyAction.CREATE)
-    void filterValueComponent();
-
-    @EntityPolicy(entityClass = AttributeResourceModel.class, actions = EntityPolicyAction.CREATE)
-    void attributeResourceModel();
-
-    @EntityPolicy(entityClass = BaseRoleModel.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = BaseRoleModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = BaseRoleModel.class, actions = EntityPolicyAction.ALL)
     void baseRoleModel();
 
-    @EntityPolicy(entityClass = AbstractSingleFilterCondition.class, actions = EntityPolicyAction.CREATE)
+    @EntityAttributePolicy(entityClass = UserSettingsItem.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = UserSettingsItem.class, actions = EntityPolicyAction.ALL)
+    void userSettingsItem();
+
+    @EntityAttributePolicy(entityClass = RowLevelPolicyModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = RowLevelPolicyModel.class, actions = EntityPolicyAction.ALL)
+    void rowLevelPolicyModel();
+
+    @EntityAttributePolicy(entityClass = RoleAssignmentEntity.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = RoleAssignmentEntity.class, actions = EntityPolicyAction.ALL)
+    void roleAssignmentEntity();
+
+    @EntityAttributePolicy(entityClass = AttributeResourceModel.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = AttributeResourceModel.class, actions = EntityPolicyAction.ALL)
+    void attributeResourceModel();
+
+    @EntityAttributePolicy(entityClass = AbstractSingleFilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = AbstractSingleFilterCondition.class, actions = EntityPolicyAction.ALL)
     void abstractSingleFilterCondition();
 
-    @EntityPolicy(entityClass = UserSubstitutionEntity.class, actions = EntityPolicyAction.CREATE)
-    void userSubstitutionEntity();
+    @EntityAttributePolicy(entityClass = FilterValueComponent.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = FilterValueComponent.class, actions = EntityPolicyAction.ALL)
+    void filterValueComponent();
 
-    @EntityPolicy(entityClass = UserSettingsItem.class, actions = EntityPolicyAction.CREATE)
-    void userSettingsItem();
+    @EntityAttributePolicy(entityClass = FilterConfiguration.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = FilterConfiguration.class, actions = EntityPolicyAction.ALL)
+    void filterConfiguration();
+
+    @EntityAttributePolicy(entityClass = HeaderFilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = HeaderFilterCondition.class, actions = EntityPolicyAction.ALL)
+    void headerFilterCondition();
+
+    @EntityAttributePolicy(entityClass = GroupFilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = GroupFilterCondition.class, actions = EntityPolicyAction.ALL)
+    void groupFilterCondition();
+
+    @EntityAttributePolicy(entityClass = InfoValue.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = InfoValue.class, actions = EntityPolicyAction.ALL)
+    void infoValue();
 }

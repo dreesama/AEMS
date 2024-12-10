@@ -15,6 +15,16 @@ import io.jmix.flowui.view.*;
 public class EventDetailView extends StandardDetailView<Event> {
     @Subscribe("descriptionField")
     public void descriptionField(final AbstractField.ComponentValueChangeEvent<JmixTextArea, ?> event) {
-        event.getSource().setHelperText(event.getValue().toString().length()+"/"+30);
+        Object value = event.getValue();
+        String helperText;
+
+        if (value != null) {
+            helperText = value.toString().length() + "/" + 30;
+        } else {
+            helperText = "0/30"; // or any other default value you want to show when the field is empty
+        }
+
+        event.getSource().setHelperText(helperText);
     }
+
 }

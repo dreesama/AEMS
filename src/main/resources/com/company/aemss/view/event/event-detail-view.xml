@@ -22,7 +22,8 @@
         <image id="image" property="eventImage" dataContainer="eventDc" height="200px" width="400px"
                classNames="event_image" maxHeight="200px" maxWidth="400px"/>
         <formLayout id="form" dataContainer="eventDc">
-            <dateTimePicker id="timeStartsField" property="timeStarts"/>
+            <dateTimePicker  id="timeStartsField" property="timeStarts" dateFormat="MM/dd/yyyy" >
+            </dateTimePicker>
             <textField id="nameField" property="name"/>
             <textField id="locationField" property="location"/>
             <textArea id="descriptionField" property="description" height="100px" maxLength="30"
