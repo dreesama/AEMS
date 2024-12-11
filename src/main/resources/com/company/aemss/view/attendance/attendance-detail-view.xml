@@ -26,6 +26,8 @@
     <layout>
         <formLayout id="form" dataContainer="attendanceDc">
             <dateTimePicker id="scannedAtField" property="scannedAt"/>
+            <textField id="eventField" property="event.name"/>
+
             <textArea id="statusField" property="status"/>
             <entityPicker id="studentField" property="student">
                 <actions>

@@ -44,8 +44,8 @@ public class MainView extends StandardMainView {
         Image image = new Image();
 
         // Set image source
-        StreamResource imageResource = new StreamResource("icon.png",
-                () -> getClass().getResourceAsStream("/META-INF/resources/icons/icon.png"));
+        StreamResource imageResource = new StreamResource("aems2.png",
+                () -> getClass().getResourceAsStream("/META-INF/resources/icons/aems2.png"));
         image.setSrc(imageResource);
         image.setAlt("Main Image Description"); // More descriptive alt text
 

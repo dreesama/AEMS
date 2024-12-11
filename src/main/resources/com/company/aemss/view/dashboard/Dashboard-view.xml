@@ -27,7 +27,7 @@
     <facets>
         <dataLoadCoordinator auto="true"/>
     </facets>
-    <layout>
+    <layout classNames="dashboard">
 
         <h3 text="Calendar" alignSelf="CENTER"/>
         <calendar:calendar id="calendar"

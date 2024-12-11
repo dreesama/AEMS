@@ -13,8 +13,12 @@
                     <property name="firstName"/>
                     <property name="lastName"/>
                     <property name="section"/>
+                    <property name="email"/>
+                    <property name="password"/>
                 </property>
-                <property name="preservedDepartment" fetchPlan="_base"/>
+                <property name="preservedDepartment" fetchPlan="_base">
+                    <property name="responsible" fetchPlan="_base"/>
+                </property>
             </fetchPlan>
             <loader id="qrCodesDl" readOnly="true">
                 <query>

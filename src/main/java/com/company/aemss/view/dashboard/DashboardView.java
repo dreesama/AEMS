@@ -95,7 +95,7 @@ public class DashboardView extends StandardView {
             } else {
                 System.out.println("No image files found");
                 Div noImagesMessage = new Div();
-                noImagesMessage.setText("No images found");
+                noImagesMessage.setText("No events found");
                 noImagesMessage.getStyle()
                         .set("padding", "24px")
                         .set("text-align", "center")

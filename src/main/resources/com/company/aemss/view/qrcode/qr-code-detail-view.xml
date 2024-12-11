@@ -8,6 +8,15 @@
             <fetchPlan extends="_base">
                 <property name="student">
                     <property name="firstName"/>
+                    <property name="department" fetchPlan="_base"/>
+                    <property name="student"/>
+                    <property name="lastName"/>
+                    <property name="section"/>
+                    <property name="email"/>
+                    <property name="password"/>
+                </property>
+                <property name="preservedDepartment" fetchPlan="_base">
+                    <property name="responsible" fetchPlan="_base"/>
                 </property>
             </fetchPlan>
             <loader id="qrCodeDl"/>
@@ -22,15 +31,17 @@
     </actions>
     <layout>
         <formLayout id="form" dataContainer="qrCodeDc">
-            <entityPicker id="studentField" property="student">
+            <entityPicker id="studentField" property="student" visible="false">
                 <actions>
                     <action id="entityLookup" type="entity_lookup"/>
                     <action id="entityClear" type="entity_clear"/>
                 </actions>
             </entityPicker>
-            <textArea id="qrCodeDataField" height="9.5em" property="qrCodeData"/>
             <textField id="studentFirstNameField" property="studentFirstName"/>
             <textField id="studentLastNameField" property="studentLastName"/>
+            <textArea id="qrCodeDataField" height="9.5em" property="qrCodeData"/>
+
+
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

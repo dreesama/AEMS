@@ -79,6 +79,7 @@
             <columns resizable="true">
                 <column property="scannedAt" filterable="true"/>
                 <column property="status" filterable="true"/>
+                <column property="event.name" filterable="true"/>
                 <column property="student.firstName" filterable="true"/>
                 <column property="student.lastName" filterable="true"/>
                 <column property="student.department" filterable="true"/>
