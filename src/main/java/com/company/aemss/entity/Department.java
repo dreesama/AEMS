@@ -11,7 +11,7 @@ import jakarta.persistence.*;
         @Index(name = "IDX_DEPARTMENTS_RESPONSIBLE", columnList = "RESPONSIBLE_ID")
 })
 @Entity
-public class Department {
+public class Department  {
     @Column(name = "id", nullable = false)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

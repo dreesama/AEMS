@@ -14,7 +14,12 @@
         <collection id="departmentsDc" class="com.company.aemss.entity.Department">
             <loader id="departmentsDl" readOnly="true">
                 <query>
-                    <![CDATA[select e from Department e order by e.name asc]]>
+                    <![CDATA[
+                        select e from Department e
+                        where (:current_user_id is null or e.responsible.id = :current_user_id)
+                        or not exists (select 1 from Department d where d.responsible.id = :current_user_id)
+                        order by e.name asc
+                    ]]>
                 </query>
             </loader>
             <fetchPlan extends="_base"/>
@@ -29,10 +34,14 @@
     </actions>
     <layout>
         <formLayout id="form" dataContainer="studentDc">
-            <entityComboBox id="departmentField" property="department" itemsContainer="departmentsDc"/>
-            <textField id="studentField" property="student" maxLength="6"
-                       valueChangeMode="EAGER" pattern="[0-9]*"
-                     />
+            <entityComboBox id="departmentField"
+                            property="department"
+                            itemsContainer="departmentsDc"/>
+            <textField id="studentField"
+                       property="student"
+                       maxLength="6"
+                       valueChangeMode="EAGER"
+                       pattern="[0-9]*"/>
             <textField id="firstNameField" property="firstName"/>
             <textField id="lastNameField" property="lastName"/>
             <textField id="sectionField" property="section"/>
