@@ -50,7 +50,11 @@ public class EventListView extends StandardListView<Event> {
 
                 return image;
             } else {
-                return null;
+                Image placeholderImage = uiComponents.create(Image.class);
+                placeholderImage.setSrc("path/to/default/image.png"); // Set a default image path
+                placeholderImage.setWidth("30px");
+                placeholderImage.setHeight("30px");
+                return placeholderImage;
             }
         });
     }

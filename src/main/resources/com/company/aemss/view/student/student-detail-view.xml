@@ -8,6 +8,7 @@
             <fetchPlan extends="_base">
                 <property name="id"/>
                 <property name="department"/>
+                <property name="section" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="studentDl"/>
         </instance>
@@ -24,6 +25,16 @@
             </loader>
             <fetchPlan extends="_base"/>
         </collection>
+        <collection id="sectionsDc" class="com.company.aemss.entity.Section">
+            <fetchPlan extends="_base">
+                <property name="department" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="sectionsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Section_ e where e.department = :container_departmentsDc]]>
+                </query>
+            </loader>
+        </collection>
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -36,7 +47,19 @@
         <formLayout id="form" dataContainer="studentDc">
             <entityComboBox id="departmentField"
                             property="department"
-                            itemsContainer="departmentsDc"/>
+                            itemsContainer="departmentsDc"
+                            metaClass="Department"
+                            label="Department"
+            />
+
+            <entityComboBox id="sectionsComboBox"
+                            metaClass="Section_"
+                            property="section"
+                            label="Section"
+                            itemsContainer="sectionsDc"
+            />
+
+
             <textField id="studentField"
                        property="student"
                        maxLength="6"
@@ -44,7 +67,6 @@
                        pattern="[0-9]*"/>
             <textField id="firstNameField" property="firstName"/>
             <textField id="lastNameField" property="lastName"/>
-            <textField id="sectionField" property="section"/>
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <view xmlns="http://jmix.io/schema/flowui/view"
       xmlns:c="http://jmix.io/schema/flowui/jpql-condition"
-      title="msg://eventListView.title"
-      focusComponent="eventsDataGrid">
+      title="msg://sectionListView.title"
+      focusComponent="sectionsDataGrid">
     <data>
-        <collection id="eventsDc"
-                    class="com.company.aemss.entity.Event">
+        <collection id="sectionsDc"
+                    class="com.company.aemss.entity.Section">
             <fetchPlan extends="_base">
-                <property name="departments" fetchPlan="_base"/>
+                <property name="department" fetchPlan="_base"/>
             </fetchPlan>
-            <loader id="eventsDl" readOnly="true">
+            <loader id="sectionsDl" readOnly="true">
                 <query>
-                    <![CDATA[select e from Event e]]>
+                    <![CDATA[select e from Section_ e]]>
                 </query>
             </loader>
         </collection>
+
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -29,21 +30,21 @@
     </actions>
     <layout>
         <genericFilter id="genericFilter"
-                       dataLoader="eventsDl" visible="false" enabled="false">
+                       dataLoader="sectionsDl" visible="false" enabled="false">
             <properties include=".*"/>
         </genericFilter>
         <hbox id="buttonsPanel" classNames="buttons-panel">
-            <button id="createButton" action="eventsDataGrid.create"/>
-            <button id="readButton" action="eventsDataGrid.read"/>
-            <button id="editButton" action="eventsDataGrid.edit"/>
-            <button id="removeButton" action="eventsDataGrid.remove"/>
-            <button id="excelBtn" action="eventsDataGrid.excelExport"/>
-            <simplePagination id="pagination" dataLoader="eventsDl" autoLoad="true"/>
+            <button id="createButton" action="sectionsDataGrid.create"/>
+            <button id="readButton" action="sectionsDataGrid.read"/>
+            <button id="editButton" action="sectionsDataGrid.edit"/>
+            <button id="removeButton" action="sectionsDataGrid.remove"/>
+            <button id="excelExportButton" action="sectionsDataGrid.excelExport"/>
+            <simplePagination id="pagination" dataLoader="sectionsDl"/>
         </hbox>
-        <dataGrid id="eventsDataGrid"
+        <dataGrid id="sectionsDataGrid"
                   width="100%"
                   minHeight="20em"
-                  dataContainer="eventsDc"
+                  dataContainer="sectionsDc"
                   columnReorderingAllowed="true">
             <actions>
                 <action id="create" type="list_create">
@@ -51,7 +52,7 @@
                         <property name="openMode" value="DIALOG"/>
                     </properties>
                 </action>
-                <action id="read" type="list_read">
+                <action id="read" type="list_read" icon="EYE">
                     <properties>
                         <property name="openMode" value="DIALOG"/>
                     </properties>
@@ -65,16 +66,8 @@
                 <action id="excelExport" type="grdexp_excelExport"/>
             </actions>
             <columns resizable="true">
-                <column key="image" sortable="false" flexGrow="0" resizable="false"/>
-                <column property="name"/>
-                <column property="timeStarts">
-                </column>
-                <column property="timeEnds">
-                </column>
-                <column property="description"/>
-                <column property="location"/>
-                <column property="eventImage" visible="false"/>
-                <column property="departments"/>
+                <column property="department"/>
+                <column property="sectionName"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

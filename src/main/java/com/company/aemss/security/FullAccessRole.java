@@ -59,10 +59,6 @@ public interface FullAccessRole {
     @EntityPolicy(entityClass = Attendance.class, actions = EntityPolicyAction.ALL)
     void attendance();
 
-    @EntityAttributePolicy(entityClass = QrCode.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @EntityPolicy(entityClass = QrCode.class, actions = EntityPolicyAction.ALL)
-    void qrCode();
-
     @EntityAttributePolicy(entityClass = FilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = FilterCondition.class, actions = EntityPolicyAction.ALL)
     void filterCondition();
@@ -154,4 +150,8 @@ public interface FullAccessRole {
     @EntityAttributePolicy(entityClass = InfoValue.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = InfoValue.class, actions = EntityPolicyAction.ALL)
     void infoValue();
+
+    @EntityAttributePolicy(entityClass = Section.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = Section.class, actions = EntityPolicyAction.ALL)
+    void section();
 }

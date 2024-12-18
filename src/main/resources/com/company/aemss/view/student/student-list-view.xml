@@ -3,11 +3,13 @@
       title="msg://studentListView.title"
       focusComponent="studentsDataGrid">
     <data>
+
         <collection id="studentsDc"
                     class="com.company.aemss.entity.Student">
             <fetchPlan extends="_base">
                 <property name="id"/>
                 <property name="department"/>
+                <property name="section" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="studentsDl" readOnly="true">
                 <query>
@@ -15,6 +17,15 @@
                 </query>
             </loader>
         </collection>
+        <collection id="departmentsDc" class="com.company.aemss.entity.Department">
+            <loader id="departmentsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Department e]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
+
     </data>
     <facets>
         <dataLoadCoordinator auto="true"/>
@@ -78,9 +89,9 @@
                 <column property="firstName" filterable="true"/>
                 <column property="lastName" filterable="true"/>
                 <column property="student" filterable="true"/>
-                <column property="section" filterable="true"/>
+                <column property="section.sectionName" filterable="true"/>
                 <column property="email" filterable="true" autoWidth="true"/>
-                <column property="password"/>
+                <column property="password" visible="false"/>
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

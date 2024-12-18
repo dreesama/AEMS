@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<view xmlns="http://jmix.io/schema/flowui/view"
+      title="msg://sectionDetailView.title"
+      focusComponent="form">
+    <data>
+
+        <collection id="departmentsDc" class="com.company.aemss.entity.Department">
+            <loader id="departmentsDl" readOnly="true">
+                <query>
+                    <![CDATA[
+                        select e from Department e
+                        where (:current_user_id is null or e.responsible.id = :current_user_id)
+                        or not exists (select 1 from Department d where d.responsible.id = :current_user_id)
+                        order by e.name asc
+                    ]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
+        <instance id="sectionDc"
+                  class="com.company.aemss.entity.Section">
+            <fetchPlan extends="_base">
+                <property name="department" fetchPlan="_base"/>
+            </fetchPlan>
+            <loader id="sectionDl"/>
+        </instance>
+    </data>
+    <facets>
+        <dataLoadCoordinator auto="true"/>
+    </facets>
+    <actions>
+        <action id="saveAction" type="detail_saveClose"/>
+        <action id="closeAction" type="detail_close"/>
+    </actions>
+    <layout>
+        <formLayout id="form" dataContainer="sectionDc">
+            <responsiveSteps>
+                <responsiveStep minWidth="0" columns="1"/>
+                <responsiveStep minWidth="40em" columns="2"/>
+            </responsiveSteps>
+            <entityComboBox id="departmentField" property="department"
+                            metaClass="Department" itemsContainer="departmentsDc"/>
+
+
+            <textField id="sectionNameField" property="sectionName"/>
+        </formLayout>
+        <hbox id="detailActions">
+            <button id="saveAndCloseButton" action="saveAction"/>
+            <button id="closeButton" action="closeAction"/>
+        </hbox>
+    </layout>
+</view>

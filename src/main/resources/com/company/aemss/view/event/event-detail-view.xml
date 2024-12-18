@@ -3,10 +3,19 @@
       title="msg://eventDetailView.title"
       focusComponent="form">
     <data>
+        <collection id="departmentsDc" class="com.company.aemss.entity.Department">
+            <loader id="departmentsDl" readOnly="true">
+                <query>
+                    <![CDATA[select e from Department e]]>
+                </query>
+            </loader>
+            <fetchPlan extends="_base"/>
+        </collection>
         <instance id="eventDc"
                   class="com.company.aemss.entity.Event">
             <fetchPlan extends="_base">
                 <property name="id"/>
+                <property name="departments" fetchPlan="_base"/>
             </fetchPlan>
             <loader id="eventDl"/>
         </instance>
@@ -22,17 +31,37 @@
         <image id="image" property="eventImage" dataContainer="eventDc" height="200px" width="400px"
                classNames="event_image" maxHeight="200px" maxWidth="400px"/>
         <formLayout id="form" dataContainer="eventDc">
-            <dateTimePicker  id="timeStartsField" property="timeStarts" dateFormat="MM/dd/yyyy" >
-            </dateTimePicker>
             <textField id="nameField" property="name"/>
-            <textField id="locationField" property="location"/>
-            <textArea id="descriptionField" property="description" height="100px" maxLength="30"
+            <multiSelectComboBoxPicker id="departmentsField" property="departments" itemsContainer="departmentsDc">
+                <actions>
+                    <action id="entityLookup" type="entity_lookup"/>
+                    <action id="entityClear" type="entity_clear"/>
+                </actions>
+            </multiSelectComboBoxPicker>
+            <dateTimePicker id="timeStartsField"
+                            property="timeStarts"
+                            dateFormat="MM/dd/yyyy HH:mm"
+                            required="true"
+                            helperText="Select start date and time"/>
+            <dateTimePicker id="timeEndsField"
+                            property="timeEnds"
+                            dateFormat="MM/dd/yyyy HH:mm"
+                            required="true"
+                            helperText="Select end date and time"/>
+            <textArea id="descriptionField" property="description"
+                      height="100px"
+                      maxLength="30"
                       valueChangeMode="EAGER"/>
+            <textField id="locationField" property="location"/>
             <hbox>
-                <fileStorageUploadField id="eventImageField" property="eventImage" dataContainer="eventDc"
-                                        clearButtonVisible="true" fileNameVisible="true" uploadIcon="vaadin:upload"/>
+                <fileStorageUploadField id="eventImageField"
+                                        property="eventImage"
+                                        dataContainer="eventDc"
+                                        clearButtonVisible="true"
+                                        fileNameVisible="true"
+                                        uploadIcon="vaadin:upload"
+                                        label="Add Image for this Event"/>
             </hbox>
-
         </formLayout>
         <hbox id="detailActions">
             <button id="saveAndCloseBtn" action="saveAction"/>

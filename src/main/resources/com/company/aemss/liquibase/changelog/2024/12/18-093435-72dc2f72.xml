@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEMSS">
+        <addColumn tableName="events">
+            <column name="DEPARTMENTS_ID" type="BIGINT"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="DEPARTMENTS_ID" tableName="events"/>
+    </changeSet>
+    <changeSet id="2" author="AEMSS">
+        <createIndex indexName="IDX_EVENTS_DEPARTMENTS" tableName="events">
+            <column name="DEPARTMENTS_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="DEPARTMENTS_ID" baseTableName="events"
+                                 constraintName="FK_EVENTS_ON_DEPARTMENTS" referencedColumnNames="id"
+                                 referencedTableName="departments"/>
+    </changeSet>
+</databaseChangeLog>

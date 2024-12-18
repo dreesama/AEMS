@@ -11,6 +11,7 @@
                 <property name="student" fetchPlan="_instance_name">
                     <property name="lastName"/>
                     <property name="department" fetchPlan="_base"/>
+                    <property name="section" fetchPlan="_base"/>
                 </property>
                 <property name="event" fetchPlan="_base"/>
             </fetchPlan>
@@ -83,6 +84,8 @@
                 <column property="student.firstName" filterable="true"/>
                 <column property="student.lastName" filterable="true"/>
                 <column property="student.department" filterable="true"/>
+                <column property="student.section" filterable="true"/>
+
             </columns>
         </dataGrid>
         <hbox id="lookupActions" visible="false">

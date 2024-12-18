@@ -1,6 +1,5 @@
 package com.company.aemss.listener;
 
-import com.company.aemss.entity.QrCode;
 import com.company.aemss.entity.Student;
 import com.company.aemss.service.QrCodeService;
 import io.jmix.core.DataManager;
@@ -35,26 +34,18 @@ public class StudentQrCodeListener {
                     .one();
 
             // Check if QR code already exists
-            QrCode existingQrCode = dataManager.load(QrCode.class)
-                    .query("select q from QrCode q where q.student = :student")
-                    .parameter("student", student)
-                    .optional()
-                    .orElse(null);
-
-            if (existingQrCode == null) {
-                // Generate QR code data with only the student ID
+            if (student.getQrCodeImage() == null) {
+                // Generate QR code data with student details or ID
                 String qrCodeData = student.getId().toString();
 
                 // Generate QR code image
                 byte[] qrCodeImage = qrCodeService.generateQrCode(qrCodeData, 500, 500);
 
-                // Create and save QR code
-                QrCode qrCode = dataManager.create(QrCode.class);
-                qrCode.setStudent(student);
-                qrCode.setQrCodeData(qrCodeData);
-                qrCode.setQrCodeImage(qrCodeImage);
+                // Update student with QR code data and image
+                student.setQrCodeData(qrCodeData);
+                student.setQrCodeImage(qrCodeImage);
 
-                dataManager.save(qrCode);
+                dataManager.save(student);
 
                 logger.info("QR Code generated for student: {} {}", student.getFirstName(), student.getId());
             } else {

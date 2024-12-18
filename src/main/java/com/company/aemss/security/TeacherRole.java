@@ -14,17 +14,13 @@ import io.jmix.securityflowui.role.annotation.ViewPolicy;
 public interface TeacherRole {
     String CODE = "teacher";
 
-    @MenuPolicy(menuIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "DashboardView"})
-    @ViewPolicy(viewIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "Event.detail", "Department.detail", "Attendance.detail", "QrCode.detail", "Student.detail", "DashboardView"})
+    @MenuPolicy(menuIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "DashboardView", "Section_.list"})
+    @ViewPolicy(viewIds = {"Event.list", "Department.list", "Student.list", "QrCode.list", "Attendance.list", "Event.detail", "Department.detail", "Attendance.detail", "QrCode.detail", "Student.detail", "DashboardView", "Section_.list", "Section_.detail"})
     void screens();
 
     @EntityAttributePolicy(entityClass = Attendance.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Attendance.class, actions = EntityPolicyAction.ALL)
     void attendance();
-
-    @EntityAttributePolicy(entityClass = QrCode.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
-    @EntityPolicy(entityClass = QrCode.class, actions = EntityPolicyAction.ALL)
-    void qrCode();
 
     @EntityAttributePolicy(entityClass = Event.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = Event.class, actions = EntityPolicyAction.ALL)
@@ -41,4 +37,8 @@ public interface TeacherRole {
     @EntityAttributePolicy(entityClass = AbstractSingleFilterCondition.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
     @EntityPolicy(entityClass = AbstractSingleFilterCondition.class, actions = EntityPolicyAction.ALL)
     void abstractSingleFilterCondition();
+
+    @EntityAttributePolicy(entityClass = Section.class, attributes = "*", action = EntityAttributePolicyAction.MODIFY)
+    @EntityPolicy(entityClass = Section.class, actions = EntityPolicyAction.ALL)
+    void section();
 }

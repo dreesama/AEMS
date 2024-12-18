@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="AEMSS">
+        <dropForeignKeyConstraint baseTableName="ATTENDANCE" constraintName="FK_ATTENDANCE_ON_EVENT"/>
+    </changeSet>
+    <changeSet id="2" author="AEMSS">
+        <dropForeignKeyConstraint baseTableName="ATTENDANCE" constraintName="FK_ATTENDANCE_ON_STUDENT"/>
+    </changeSet>
+    <changeSet id="3" author="AEMSS">
+        <dropForeignKeyConstraint baseTableName="QR_CODE" constraintName="FK_QR_CODE_ON_PRESERVED_DEPARTMENT"/>
+    </changeSet>
+    <changeSet id="4" author="AEMSS">
+        <dropForeignKeyConstraint baseTableName="QR_CODE" constraintName="FK_QR_CODE_ON_STUDENT"/>
+    </changeSet>
+    <changeSet id="5" author="AEMSS">
+        <dropForeignKeyConstraint baseTableName="students" constraintName="FK_STUDENTS_ON_DEPARTMENT"/>
+    </changeSet>
+    <changeSet id="6" author="AEMSS">
+        <addColumn tableName="ATTENDANCE">
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="7" author="AEMSS">
+        <addColumn tableName="departments">
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="8" author="AEMSS">
+        <addColumn tableName="events">
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="9" author="AEMSS">
+        <addColumn tableName="students">
+            <column name="CREATED_BY" type="VARCHAR(255)"/>
+            <column name="CREATED_DATE" type="${offsetDateTime.type}"/>
+            <column name="DELETED_BY" type="VARCHAR(255)"/>
+            <column name="DELETED_DATE" type="${offsetDateTime.type}"/>
+            <column name="LAST_MODIFIED_BY" type="VARCHAR(255)"/>
+            <column name="LAST_MODIFIED_DATE" type="${offsetDateTime.type}"/>
+        </addColumn>
+    </changeSet>
+    <changeSet id="10" author="AEMSS">
+        <addColumn tableName="events">
+            <column name="TIME_ENDS" type="TIME"/>
+        </addColumn>
+
+        <addNotNullConstraint columnName="TIME_ENDS" defaultNullValue="now()" tableName="events"/>
+    </changeSet>
+    <changeSet id="11" author="AEMSS">
+        <addForeignKeyConstraint baseColumnNames="EVENT_ID" baseTableName="ATTENDANCE"
+                                 constraintName="FK_ATTENDANCE_ON_EVENT" referencedColumnNames="id"
+                                 referencedTableName="events"/>
+    </changeSet>
+    <changeSet id="12" author="AEMSS">
+        <addForeignKeyConstraint baseColumnNames="STUDENT_ID" baseTableName="ATTENDANCE"
+                                 constraintName="FK_ATTENDANCE_ON_STUDENT" referencedColumnNames="id"
+                                 referencedTableName="students"/>
+    </changeSet>
+    <changeSet id="13" author="AEMSS">
+        <addForeignKeyConstraint baseColumnNames="PRESERVED_DEPARTMENT_ID" baseTableName="QR_CODE"
+                                 constraintName="FK_QR_CODE_ON_PRESERVED_DEPARTMENT" referencedColumnNames="id"
+                                 referencedTableName="departments"/>
+    </changeSet>
+    <changeSet id="14" author="AEMSS">
+        <addForeignKeyConstraint baseColumnNames="STUDENT_ID" baseTableName="QR_CODE"
+                                 constraintName="FK_QR_CODE_ON_STUDENT" referencedColumnNames="id"
+                                 referencedTableName="students"/>
+    </changeSet>
+    <changeSet id="15" author="AEMSS">
+        <addForeignKeyConstraint baseColumnNames="department_id" baseTableName="students"
+                                 constraintName="FK_STUDENTS_ON_DEPARTMENT" referencedColumnNames="id"
+                                 referencedTableName="departments"/>
+    </changeSet>
+    <changeSet id="16" author="AEMSS">
+        <addNotNullConstraint columnDataType="DATETIME" columnName="TIME_STARTS" tableName="events" validate="true"/>
+    </changeSet>
+</databaseChangeLog>
